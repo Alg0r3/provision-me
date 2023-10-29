@@ -1,2 +1,5 @@
 # Jetbrain's IDE
 .idea
+
+# Ansible dependencies collections
+./ansible/collections/ansible_collections

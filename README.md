@@ -11,3 +11,9 @@ to automate these tasks.
 ## Requirements
 
 - Ansible 2.10.8 or higher
+
+## Dependencies
+
+```
+ansible-galaxy collection install -r requirements.yml
+```
