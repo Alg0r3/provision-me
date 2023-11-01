@@ -1,3 +1,4 @@
+---
 - name: Pre-flight checks for Debian-based systems
   block:
     - name: Update APT package cache
@@ -5,13 +6,25 @@
         cmd: apt update
       become: true
 
-    - name: Check if Python 3 is installed
+    - name: Check if Python3 is installed
+      ansible.builtin.command:
+        cmd: which python3
+      register: python3_installed
+      ignore_errors: true
+
+    - name: Install Python3
+      ansible.builtin.command:
+        cmd: apt install -y python3
+      become: true
+      when: python3_installed.rc != 0
+
+    - name: Check if python3-apt is installed
       ansible.builtin.shell:
         cmd: dpkg -l | grep python3-apt
       register: python3_apt_installed
       ignore_errors: true
 
-    - name: Install Python 3
+    - name: Install python3-apt
       ansible.builtin.command:
         cmd: apt install -y python3-apt
       become: true
@@ -43,4 +56,16 @@
         cmd: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
       become: false
       when: homebrew_installed.rc != 0
+
+    - name: Check if Python3 is installed
+      community.general.command:
+        name: which python3
+      register: python3_installed
+      ignore_errors: true
+
+    - name: Install Python3
+      community.general.homebrew:
+        name: python3
+      become: false
+      when: python3_installed.rc != 0
   when: ansible_facts['os_family'] == 'Darwin'

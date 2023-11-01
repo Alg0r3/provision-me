@@ -1,3 +1,4 @@
+---
 - name: Install PHP for Debian-based systems
   block:
     - name: Determine PHP Repository for Debian-based systems

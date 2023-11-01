@@ -11,4 +11,4 @@ install-requirements: ## Install all the requirements for running playbooks and 
 		--collections-path ./ansible/collections/
 
 playbook-symfony: ## Run the playbook that sets up a local symfony environment
-	ansible-playbook --inventory ./ansible/hosts.ini ./ansible/playbooks/setup_local_symfony_environment.yaml
+	ansible-playbook ./ansible/playbooks/setup_local_symfony.yaml
