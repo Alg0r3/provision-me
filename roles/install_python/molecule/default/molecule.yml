@@ -1,0 +1,20 @@
+---
+dependency:
+  name: galaxy
+  options:
+    requirement-file: ../../../../collections/collections.yml
+
+driver:
+  name: docker
+
+provisioner:
+  name: ansible
+
+platforms:
+  - name: molecule-ubuntu
+    image: ubuntu:18.04
+    pre_build_image: true
+
+  - name: molecule-debian
+    image: debian:10
+    pre_build_image: true

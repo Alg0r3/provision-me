@@ -1,0 +1,36 @@
+---
+- name: Check the system OS family
+  ansible.builtin.raw: uname --kernel-name
+  register: os_family
+  ignore_errors: true
+  changed_when: false
+
+- name: Check if python3 is installed
+  ansible.builtin.raw: command -v python3
+  register: python3_installed
+  ignore_errors: true
+  changed_when: false
+
+- name: Install python3 for Linux-based systems
+  when:
+    - python3_installed.rc != 0
+    - os_family.stdout | trim == 'Linux'
+  block:
+    - name: Check if the system is Debian-based
+      ansible.builtin.raw: ls /etc/debian_version
+      register: is_debian
+      ignore_errors: true
+      changed_when: false
+
+    - name: Install python3 for Debian-based systems
+      ansible.builtin.raw: sudo apt-get install -y python3
+      when: is_debian.rc == 0
+      changed_when: true
+
+- name: Install python3 for Darwin-based systems
+  when:
+    - python3_installed.rc !=0
+    - os_family.stdout | trim == 'Darwin'
+  community.general.homebrew:
+    name: python3
+  become: false

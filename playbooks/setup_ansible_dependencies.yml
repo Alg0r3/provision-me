@@ -1,0 +1,59 @@
+---
+- name: Initial setup
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Check the system OS family
+      ansible.builtin.raw: uname --kernel-name
+      register: os_family
+      ignore_errors: true
+      changed_when: false
+
+    - name: Update package cache
+      block:
+        - name: Check if the system is Debian-based
+          ansible.builtin.raw: ls /etc/debian_version
+          register: is_debian
+          ignore_errors: true
+          changed_when: false
+
+        - name: Update apt cache
+          ansible.builtin.raw: apt-get update
+          when: is_debian.rc == 0
+          changed_when: false
+
+    - name: Ensure sudo is installed
+      ansible.builtin.include_role:
+        name: install_sudo
+      when: os_family.stdout | trim == 'Linux'
+
+    - name: Ensure homebrew is installed
+      ansible.builtin.include_role:
+        name: install_homebrew
+      when: os_family.stdout | trim == 'Darwin'
+
+    - name: Ensure python3 is installed
+      ansible.builtin.include_role:
+        name: install_python
+
+- name: Set up Ansible dependencies
+  hosts: all
+  tasks:
+    - name: Install Debian-based dependencies
+      when: ansible_os_family == 'Debian'
+      block:
+        - name: Check if python3-apt is installed
+          ansible.builtin.command:
+            cmd: dpkg-query --show --showformat='${Status}' python3-apt
+          register: python3_apt_installed
+          ignore_errors: true
+          changed_when: false
+
+        - name: Install python3-apt
+          ansible.builtin.command:
+            cmd: apt-get install -y python3-apt
+          when: python3_apt_installed.rc != 0
+
+        - name: Ensure gpg is installed
+          ansible.builtin.apt:
+            name: gnupg

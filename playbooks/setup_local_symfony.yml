@@ -3,4 +3,4 @@
   hosts: all
   roles:
     - pre_flight_checks
-    - php_install
+    - install_php

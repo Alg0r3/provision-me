@@ -12,3 +12,7 @@ install-requirements: ## Install all the requirements for running playbooks and 
 
 playbook-symfony: ## Run the playbook that sets up a local symfony environment
 	ansible-playbook ./ansible/playbooks/setup_local_symfony.yaml
+
+lint:
+	yamllint .
+	ansible-lint

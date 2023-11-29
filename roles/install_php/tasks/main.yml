@@ -1,0 +1,42 @@
+---
+- name: Install PHP for Debian-based systems
+  when: ansible_facts['os_family'] == 'Debian'
+  block:
+    - name: Determine PHP Repository for Debian-based systems
+      ansible.builtin.set_fact:
+        php_repo: >
+          {{
+            'ppa:ondrej/php' if ansible_facts['distribution'] == 'Ubuntu'
+            else 'deb https://packages.sury.org/php/ buster main'
+          }}
+
+    - name: Install necessary packages for key management
+      ansible.builtin.apt:
+        name: dirmngr
+        state: present
+      when: ansible_facts['distribution'] == 'Ubuntu'
+      become: true
+
+    - name: Add PHP Repository
+      ansible.builtin.apt_repository:
+        repo: "{{ php_repo }}"
+      become: true
+
+    - name: Install PHP versions and extensions
+      ansible.builtin.apt:
+        name: "{{ ['php' + version] + php_install_extensions | map('regex_replace', '^(.*)$', 'php' + version + '-\\1') | list }}"
+      loop: "{{ php_install_versions }}"
+      loop_control:
+        loop_var: version
+      become: true
+
+- name: Install PHP for macOS systems
+  when: ansible_facts['os_family'] == 'Darwin'
+  block:
+    - name: Install PHP versions and extensions
+      community.general.homebrew:
+        name: "{{ ['php' + version] + php_install_extensions | map('regex_replace', '^(.*)$', 'php' + version + '-\\1') | list }}"
+      loop: "{{ php_install_versions }}"
+      loop_control:
+        loop_var: version
+      become: false

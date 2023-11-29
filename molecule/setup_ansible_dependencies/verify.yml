@@ -1,0 +1,31 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Check if the system is Debian-based
+      ansible.builtin.raw: ls /etc/debian_version
+      register: is_debian
+      ignore_errors: true
+      changed_when: false
+
+    - name: Verify for Debian-based systems
+      when: is_debian.rc == 0
+      block:
+        - name: Ensure sudo is installed
+          ansible.builtin.raw: sudo --version
+          changed_when: false
+
+        - name: Ensure python3 is installed
+          ansible.builtin.raw: python3 --version
+          changed_when: false
+
+        - name: Ensure python3-apt is installed
+          ansible.builtin.command:
+            cmd: dpkg-query --show --showformat='${Status}' python3-apt
+          ignore_errors: true
+          changed_when: false
+
+        - name: Ensure gpg is installed
+          ansible.builtin.apt:
+            name: gpg

@@ -1,10 +1,10 @@
 ---
-php_versions:
+install_php_versions:
   - '8.0'
   - '8.1'
   - '8.2'
 
-php_extensions:
+install_php_extensions:
   - gd
   - intl
   - mbstring

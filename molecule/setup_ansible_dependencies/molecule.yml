@@ -1,0 +1,26 @@
+---
+dependency:
+  name: galaxy
+  options:
+    requirements-file: ./collections/collections.yml
+
+driver:
+  name: docker
+
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: # Run the roles_path.sh script to update this
+  inventory:
+    group_vars:
+      all:
+        install_python_version: python3
+
+platforms:
+  - name: molecule-ubuntu
+    image: ubuntu:18.04
+    pre_build_image: true
+
+  - name: molecule-debian
+    image: debian:10
+    pre_build_image: true
