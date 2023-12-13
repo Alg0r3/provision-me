@@ -1,0 +1,3 @@
+---
+- name: Prepare
+  import_playbook: ../../../../playbooks/setup_ansible_dependencies.yml

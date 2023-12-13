@@ -2,19 +2,26 @@
 dependency:
   name: galaxy
   options:
-    requirements-file: ./collections/collections.yml
+    requirement-file: ../../../../collections/collections.yml
 
 driver:
   name: docker
 
 provisioner:
   name: ansible
-  env:
-    ANSIBLE_ROLES_PATH: /home/gtokotuu/Projects/Github/provision-me/roles
   inventory:
     group_vars:
       all:
-        install_python_version: python3
+        install_php_versions:
+          - '8.0'
+          - '8.1'
+          - '8.2'
+        install_php_extensions:
+          - gd
+          - intl
+          - mbstring
+          - pdo
+          - xml
 
 platforms:
   - name: molecule-ubuntu

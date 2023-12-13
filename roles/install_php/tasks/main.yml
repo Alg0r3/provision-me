@@ -1,39 +1,63 @@
 ---
 - name: Install PHP for Debian-based systems
-  when: ansible_facts['os_family'] == 'Debian'
+  when: ansible_os_family == 'Debian'
   block:
-    - name: Determine PHP Repository for Debian-based systems
-      ansible.builtin.set_fact:
-        php_repo: >
-          {{
-            'ppa:ondrej/php' if ansible_facts['distribution'] == 'Ubuntu'
-            else 'deb https://packages.sury.org/php/ buster main'
-          }}
-
-    - name: Install necessary packages for key management
+    - name: Install required packages
       ansible.builtin.apt:
-        name: dirmngr
-        state: present
-      when: ansible_facts['distribution'] == 'Ubuntu'
-      become: true
+        name:
+          - lsb-release
+          - ca-certificates
+          - curl
 
-    - name: Add PHP Repository
-      ansible.builtin.apt_repository:
-        repo: "{{ php_repo }}"
-      become: true
+    - name: Add Ondrej Sury PHP Repository for Debian
+      when: ansible_distribution == 'Debian'
+      block:
+        - name: Add the GPG key for Sury PHP
+          ansible.builtin.apt_key:
+            url: https://packages.sury.org/php/apt.gpg
+            keyring: /usr/share/keyrings/deb.sury.org-php.gpg
 
-    - name: Install PHP versions and extensions
+        - name: Add Sury PHP repository
+          ansible.builtin.lineinfile:
+            path: /etc/apt/sources.list.d/php.list
+            line: "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ {{ ansible_distribution_release }} main"
+            create: true
+
+    - name: Add Ondrej Sury PHP Repository for Ubuntu
+      when: ansible_distribution == 'Ubuntu'
+      block:
+        - name: Add the GPG key for Sury PHP
+          ansible.builtin.apt_key:
+            url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x14AA40EC0831756756D7F66C4F4EA0AAE5267A6C
+
+        - name: Add PPA
+          ansible.builtin.lineinfile:
+            path: /etc/apt/sources.list.d/ondrej-ubuntu-php-bionic.list
+            line: "deb https://ppa.launchpadcontent.net/ondrej/php/ubuntu {{ ansible_distribution_release }} main"
+            create: true
+
+        - name: Add PPA (source)
+          ansible.builtin.lineinfile:
+            path: /etc/apt/sources.list.d/ondrej-ubuntu-php-bionic.list
+            line: "deb-src https://ppa.launchpadcontent.net/ondrej/php/ubuntu {{ ansible_distribution_release }} main"
+            create: true
+
+    - name: Update apt cache after adding PHP repository
       ansible.builtin.apt:
-        name: "{{ ['php' + version] + php_install_extensions | map('regex_replace', '^(.*)$', 'php' + version + '-\\1') | list }}"
-      loop: "{{ php_install_versions }}"
+        update_cache: true
+
+    - name: Install PHP versions and extensions for Debian and Ubuntu
+      ansible.builtin.apt:
+        name: "{{ ['php' + version] + install_php_extensions | map('regex_replace', '^(.*)$', 'php' + version + '-\\1') | list }}"
+      loop: "{{ install_php_versions }}"
       loop_control:
         loop_var: version
       become: true
 
 - name: Install PHP for macOS systems
-  when: ansible_facts['os_family'] == 'Darwin'
+  when: ansible_os_family == 'Darwin'
   block:
-    - name: Install PHP versions and extensions
+    - name: Install PHP versions and extensions for macOS
       community.general.homebrew:
         name: "{{ ['php' + version] + php_install_extensions | map('regex_replace', '^(.*)$', 'php' + version + '-\\1') | list }}"
       loop: "{{ php_install_versions }}"

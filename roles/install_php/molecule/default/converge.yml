@@ -1,0 +1,6 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - ansible.builtin.include_role:
+        name: install_php
