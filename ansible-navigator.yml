@@ -1,0 +1,45 @@
+---
+ansible-navigator:
+  app: run # Makes ansible-navigator default to the run subcommand instead of TUI
+  execution-environment:
+    container-engine: podman
+    enabled: true # Always use an EE
+    image: alg0r3/ansible-ee:latest
+    pull:
+      policy: never # Build the image with ansible-builder first
+    container-options:
+      - "--userns=keep-id"
+    volume-mounts:
+      - src: .
+        dest: /runners/project
+        options: Z # On Fedora with SELinux, avoid permission DENIED errors
+      - src: /run/user/1000/podman # Replace 1000 with actual UID if needed
+        dest: /run/user/1000/podman
+        options: rw,z
+    environment-variables:
+      set:
+        CONTAINER_HOST: unix:///run/user/1000/podman/podman.sock # Point Molecule/Podman at the correct rootless socket
+  logging:
+    level: debug
+    append: true
+    file: ./ansible-navigator.log
+  mode: stdout # More friendly for CI runs
+  color:
+    enable: true
+    osc4: true
+  ansible:
+    config:
+      path: ./ansible.cfg
+    cmdline: "--forks 15" # Bumping parallel SSH forks from default 5 to 15
+    inventory:
+      entries:
+        - ./hosts.ini
+  ansible-builder:
+    workdir: .
+  ansible-runner:
+    artifact-dir: ./.artifacts
+    rotate-artifacts-count: 10
+    timeout: 300
+    job-events: false
+  time-zone: local
+

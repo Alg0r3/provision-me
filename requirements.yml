@@ -1,0 +1,5 @@
+# Ansible Galaxy collections and roles dependencies
+---
+collections:
+  - name: community.general
+
