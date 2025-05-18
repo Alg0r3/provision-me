@@ -11,22 +11,19 @@ to automate these tasks.
 
 ## Requirements
 
-For the control node (the machine that runs Ansible) :
+For the control node (the machine that runs Ansible):
 
 - [ansible-navigator](https://ansible.readthedocs.io/projects/navigator/installation)
+- [ansible-builder](https://ansible.readthedocs.io/projects/builder/en/latest/installation)
 - [podman](https://podman.io/docs/installation)
 
 > Note: or you can use Docker instead of Podman, you'll need to tinker with some settings to make it work.
 
-For the managed node (the machine that Ansible is managing) :
-
-- Python 3.5+
-
 ## TODO
 
-- [ ] complete the Symfony playbook
-- [ ] write a Docker playbook
-- [ ] write a Molecule playbook
-- [ ] write a Terminal playbook
+- [ ] Update README
+- [ ] Write a CLI playbook
+- [ ] Write a Docker playbook
+- [ ] Write a Podman playbook
 - [ ] CI/CD
 
