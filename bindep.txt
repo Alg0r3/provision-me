@@ -1,0 +1,5 @@
+# System packages needed for common Ansible functionality
+openssh-clients
+sshpass
+podman
+

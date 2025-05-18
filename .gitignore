@@ -1,5 +1,6 @@
-# Jetbrain's IDE
-.idea
+# Contains file to build the EE image
+context/
 
-# Ansible dependencies collections
-./collections/ansible_collections
+# Logs
+ansible-navigator.log
+

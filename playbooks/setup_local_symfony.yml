@@ -1,6 +1,0 @@
----
-- name: Set up local Symfony environment
-  hosts: all
-  roles:
-    - pre_flight_checks
-    - install_php

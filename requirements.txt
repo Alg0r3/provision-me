@@ -1,0 +1,4 @@
+# Python package requirements
+molecule>=25.4,<26.0
+molecule-plugins[podman]
+
