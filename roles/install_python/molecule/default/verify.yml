@@ -1,8 +1,0 @@
----
-- name: Verify
-  hosts: all
-  gather_facts: false
-  tasks:
-    - name: Ensure python3 is installed
-      ansible.builtin.raw: python3 --version
-      changed_when: false

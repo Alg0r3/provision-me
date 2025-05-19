@@ -1,18 +1,21 @@
-.PHONY: help install-requirements playbook-symfony
+.DEFAULT_GOAL := help
 
-help: ## Display available commands
-	@grep --extended-regexp '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
-		| sort \
-		| awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
+## Allow passing arguments via the ARG variable (default is empty)
+ARG ?=
 
-install-requirements: ## Install all the requirements for running playbooks and roles
-	@ansible-galaxy collection install \
-		--requirements-file ./ansible/collections/requirements.yaml \
-		--collections-path ./ansible/collections/
+.PHONY: build
+build: ## Build the execution environment (EE) with Ansible Builder.
+	@ansible-builder build --container-runtime podman --tag alg0r3/ansible-ee:latest
 
-playbook-symfony: ## Run the playbook that sets up a local symfony environment
-	ansible-playbook ./ansible/playbooks/setup_local_symfony.yaml
+.PHONY: test
+test: ## Run Molecule tests for the given scenario inside the EE.
+	@ansible-navigator exec -- molecule test --scenario-name $(ARG)
 
-lint:
-	yamllint .
-	ansible-lint
+.PHONY: help
+help: ## Show this help message.
+	@echo "Usage:"
+	@echo "  make <target>"
+	@echo ""
+	@echo "Targets:"
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9_-]+:.*?## / {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
