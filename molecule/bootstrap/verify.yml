@@ -1,0 +1,22 @@
+---
+- name: Verify basic bootstrap
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Stat python3 binary
+      ansible.builtin.stat:
+        path: /usr/bin/python3
+      register: py
+    - name: Assert python3 exists and is executable
+      ansible.builtin.assert:
+        that:
+          - py.stat.exists
+          - "((py.stat.mode | int(base=8)) % 8) != 0"
+    - name: Gather package facts
+      ansible.builtin.package_facts:
+    - name: Assert python3 and sudo packages are present
+      ansible.builtin.assert:
+        that:
+          - "'python3' in ansible_facts.packages"
+          - "'sudo'     in ansible_facts.packages"
+

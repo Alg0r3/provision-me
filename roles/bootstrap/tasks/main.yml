@@ -1,0 +1,39 @@
+---
+- name: Detect package manager (APT or DNF)
+  ansible.builtin.raw: >
+    /bin/sh -c '
+      if command -v dnf >/dev/null 2>&1; then echo dnf;
+      elif command -v apt-get >/dev/null 2>&1; then echo apt;
+      else echo unknown; fi
+    '
+  register: package_manager
+  changed_when: false
+
+- name: Check for Python3 binary
+  ansible.builtin.raw: test -x /usr/bin/python3
+  register: python3_check
+  failed_when: false
+  changed_when: false
+
+- name: Install Python3 if missing
+  ansible.builtin.raw: >
+   /bin/sh -c '
+      if [ "{{ package_manager.stdout | trim }}" = "dnf" ]; then
+        dnf -y install python3 python3-dnf python3-libdnf5;
+      elif [ "{{ package_manager.stdout | trim }}" = "apt" ]; then
+        DEBIAN_FRONTEND=noninteractive apt-get update -y &&
+        apt-get install -y python3;
+      fi
+    '
+  when: python3_check.rc != 0
+
+# Shoud reset SSH here ?
+
+- name: Gather facts
+  ansible.builtin.setup:
+
+- name: Ensure sudo is present
+  ansible.builtin.package:
+    name: sudo
+    state: present
+
