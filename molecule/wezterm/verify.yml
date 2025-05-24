@@ -1,0 +1,27 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Verify Wezterm file metadata
+      ansible.builtin.stat:
+        path: /usr/bin/wezterm
+      register: wezterm
+
+    - name: Assert WezTerm is present and executable
+      ansible.builtin.assert:
+        that:
+          - wezterm.stat.exists
+          - wezterm.stat.mode is match("^0?755$")
+
+    - name: Check WezTerm can report its version
+      ansible.builtin.command: wezterm --version
+      register: wezterm_version
+      changed_when: false
+
+    - name: Assert version command succeeded
+      ansible.builtin.assert:
+        that:
+          - wezterm_version.rc == 0
+          - wezterm_version.stdout is search("wezterm")
+
