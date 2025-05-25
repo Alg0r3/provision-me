@@ -1,6 +1,6 @@
 ---
 # Fedora 42
-- name: Enable official COPR for Wezterm
+- name: Ensure official COPR for Wezterm is enabled
   community.general.copr:
     name: wezfurlong/wezterm-nightly
   notify: refresh dnf cache
@@ -8,7 +8,7 @@
 - name: Flush queued handlers
   ansible.builtin.meta: flush_handlers
 
-- name: Install Wezterm
+- name: Ensure Wezterm is installed
   ansible.builtin.dnf:
     name: wezterm
 

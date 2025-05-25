@@ -1,0 +1,6 @@
+---
+# Fedora 42
+- name: Ensure Fish is installed
+  ansible.builtin.dnf:
+    name: fish
+

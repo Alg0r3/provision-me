@@ -1,0 +1,22 @@
+---
+# Debian 12
+- name: Ensure Fish GPG key is present
+  ansible.builting.get_url:
+    url: https://download.opensuse.org/repositories/shells:fish:release:4/Debian_12/Release.key
+    dest: /etc/apt/trusted.gpg.d/shells_fish_release_4.gpg
+    mode: 644
+
+- name: Ensure Fish APT repository is configured
+  ansible.builtin.apt_repository:
+    filename: shells:fish:release:4
+    repo: deb http://download.opensuse.org/repositories/shells:/fish:/release:/4/Debian_12/ /
+    update_cache: false # Let the handler do it
+  notify: refresh apt cache
+
+- name: Flush queued handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Ensure Fish is installed
+  ansible.builtin.apt:
+    name: fish
+

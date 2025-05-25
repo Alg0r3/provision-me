@@ -1,22 +1,22 @@
 ---
 # Debian 12
-- name: Add Wezterm repository key
+- name: Ensure Wezterm GPG key is present
   ansible.builtin.get_url:
     url: https://apt.fury.io/wez/gpg.key
     dest: /usr/share/keyrings/wezterm-fury.gpg
     mode: 644
 
-- name: Add Wezterm APT repository
+- name: Ensure Wezterm APT repository is configured
   ansible.builtin.apt_repository:
     filename: wezterm
     repo: deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg trusted=yes] https://apt.fury.io/wez/ * *
-    update_cache: false # let the handler do it
+    update_cache: false # Let the handler do it
   notify: refresh apt cache
 
 - name: Flush queued handlers
   ansible.builtin.meta: flush_handlers
 
-- name: Install Wezterm
+- name: Ensure Wezterm is installed
   ansible.builtin.apt:
     name: wezterm-nightly
 
