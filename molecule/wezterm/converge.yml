@@ -1,0 +1,16 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: false
+  pre_tasks:
+    - name: Install basic dependencies
+      ansible.builtin.import_role:
+        name: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/roles/bootstrap"
+      become: false
+
+    - name: Gather facts now that Python3 is installed
+      ansible.builtin.setup:
+  become: true
+  roles:
+    - name: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/roles/wezterm"
+

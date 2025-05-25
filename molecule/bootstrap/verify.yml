@@ -1,22 +1,32 @@
 ---
-- name: Verify basic bootstrap
+- name: Verify
   hosts: all
-  gather_facts: false
   tasks:
-    - name: Stat python3 binary
+    - name: Verify Python3 file metadata
       ansible.builtin.stat:
         path: /usr/bin/python3
-      register: py
-    - name: Assert python3 exists and is executable
+        follow: true
+      register: python3
+
+    - name: Assert Python3 exists and is executable
       ansible.builtin.assert:
         that:
-          - py.stat.exists
-          - "((py.stat.mode | int(base=8)) % 8) != 0"
+          - python3.stat.exists
+          - python3.stat.mode is match("^0?755$")
+
     - name: Gather package facts
       ansible.builtin.package_facts:
-    - name: Assert python3 and sudo packages are present
+
+    - name: Assert Python3 and sudo packages are present
       ansible.builtin.assert:
         that:
           - "'python3' in ansible_facts.packages"
-          - "'sudo'     in ansible_facts.packages"
+          - "'sudo' in ansible_facts.packages"
+
+    - name: Assert Python-DNF packages are present
+      ansible.builtin.assert:
+        that:
+         - "'python3-dnf' in ansible_facts.packages"
+         - "'python3-libdnf5' in ansible_facts.packages"
+      when: ansible_facts.pkg_mgr == "dnf5"
 

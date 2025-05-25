@@ -3,5 +3,5 @@
   hosts: all
   gather_facts: false
   roles:
-    - role: ../../roles/bootstrap
+    - name: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/roles/bootstrap"
 
