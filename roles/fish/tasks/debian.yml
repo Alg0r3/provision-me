@@ -1,15 +1,20 @@
 ---
 # Debian 12
 - name: Ensure Fish GPG key is present
-  ansible.builting.get_url:
+  ansible.builtin.get_url:
     url: https://download.opensuse.org/repositories/shells:fish:release:4/Debian_12/Release.key
-    dest: /etc/apt/trusted.gpg.d/shells_fish_release_4.gpg
+    dest: /usr/share/keyrings/fish-release.asc
     mode: 644
+
+- name: Ensure key is a binary keyring
+  ansible.builtin.command:
+    cmd: gpg --dearmor -o /usr/share/keyrings/fish-release.gpg /usr/share/keyrings/fish-release.asc
+    creates: /usr/share/keyrings/fish-release.gpg
 
 - name: Ensure Fish APT repository is configured
   ansible.builtin.apt_repository:
     filename: shells:fish:release:4
-    repo: deb http://download.opensuse.org/repositories/shells:/fish:/release:/4/Debian_12/ /
+    repo: deb [signed-by=/usr/share/keyrings/fish-release.gpg] http://download.opensuse.org/repositories/shells:/fish:/release:/4/Debian_12/ /
     update_cache: false # Let the handler do it
   notify: refresh apt cache
 

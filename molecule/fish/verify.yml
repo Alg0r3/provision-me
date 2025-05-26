@@ -1,0 +1,27 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Verify Fish file metadata
+      ansible.builtin.stat:
+        path: /usr/bin/fish
+      register: fish
+
+    - name: Assert Fish is present and executable
+      ansible.builtin.assert:
+        that:
+          - fish.stat.exists
+          - fish.stat.mode is match("^0?755$")
+
+    - name: Check Fish can report its version
+      ansible.builtin.command: fish --version
+      register: fish_version
+      changed_when: false
+
+    - name: Assert version command succeeded
+      ansible.builtin.assert:
+        that:
+          - fish_version.rc == 0
+          - fish_version.stdout is search("fish")
+
