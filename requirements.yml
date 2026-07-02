@@ -1,5 +1,6 @@
 # Ansible Galaxy collections and roles dependencies
 ---
 collections:
+  - name: ansible.posix
   - name: community.general
-
+  - name: containers.podman

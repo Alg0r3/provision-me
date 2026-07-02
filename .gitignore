@@ -1,6 +1,7 @@
-# Contains file to build the EE image
-context/
+# Local Python environment
+.venv/
 
-# Logs
-ansible-navigator.log
-
+# Generated output
+.ansible/
+.artifacts/
+.molecule/
