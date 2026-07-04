@@ -1,12 +1,22 @@
 ---
 dependency:
   name: galaxy
+  enabled: false
 
 driver:
   name: podman
 
 provisioner:
   name: ansible
+
+scenario:
+  test_sequence:
+    - destroy
+    - create
+    - converge
+    - idempotence
+    - verify
+    - destroy
 
 platforms:
   - name: fedora-${FEDORA_VERSION:-44}

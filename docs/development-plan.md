@@ -25,8 +25,5 @@ Molecule development workflow.
   `~/.ansible`, if any exist.
 - Review useful material from `feature/terminal-playbook`.
 - Review and clean the WIP `feature/fish-role`.
-- Replace deprecated `ansible.builtin.apt_repository` usage in the WezTerm
-  Debian tasks.
-- Reduce Molecule warning noise from named scenarios and missing optional
-  dependency/cleanup files.
+- Reduce Molecule warning noise from named scenarios.
 - Add top-level playbooks after the local development workflow is reliable.
