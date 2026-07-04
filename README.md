@@ -71,6 +71,14 @@ make test-role ROLE=bootstrap
 make test-role ROLE=wezterm
 ```
 
+Molecule tests use Fedora and Debian container versions defined in the
+Makefile. Override them when testing a newer or older target:
+
+```shell
+FEDORA_VERSION=45 make test-role ROLE=bootstrap
+DEBIAN_VERSION=13 make test-role ROLE=wezterm
+```
+
 ## Dependency Model
 
 There are three dependency layers:

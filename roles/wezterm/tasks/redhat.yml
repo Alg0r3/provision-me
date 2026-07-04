@@ -1,5 +1,4 @@
 ---
-# Fedora 42
 - name: Enable official COPR for Wezterm
   community.general.copr:
     name: wezfurlong/wezterm-nightly
@@ -11,4 +10,3 @@
 - name: Install Wezterm
   ansible.builtin.dnf:
     name: wezterm
-
