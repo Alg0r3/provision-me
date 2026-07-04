@@ -8,6 +8,7 @@ Molecule development workflow.
 - Local Python tooling is installed in `.venv`.
 - Ansible Galaxy collections are installed in `.ansible/collections`.
 - Podman is the default Molecule driver.
+- Molecule Fedora and Debian container versions are defined in the Makefile.
 - Ansible Navigator and Ansible Builder are not part of the default workflow.
 - `pipx` can stay installed globally, but it is not used by this project.
 
@@ -25,5 +26,4 @@ Molecule development workflow.
   `~/.ansible`, if any exist.
 - Review useful material from `feature/terminal-playbook`.
 - Review and clean the WIP `feature/fish-role`.
-- Reduce Molecule warning noise from named scenarios.
 - Add top-level playbooks after the local development workflow is reliable.
