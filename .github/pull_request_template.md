@@ -1,22 +1,18 @@
-# Overview
-Closes #<!-- issue number -->
-Related to #<!-- optional issue -->
+## Summary
 
-# What’s inside
-<!-- Bullet-point summary of key changes -->
-- 
+- ...
 
-# Motivation & Context
-<!-- Why did you build this change? Link to docs, RFCs, screenshots, etc. -->
+## Linked issue
 
-# Implementation notes
-<!-- Design decisions, trade-offs, tricky algorithms, performance tweaks… -->
+Closes #
 
-# Checklist
-- [ ] **Self-review:** tests pass
-- [ ] **Style:** linters show no diff
-- [ ] **Docs updated** (README, ADR, Storybook, etc.)
+## Verification
 
-# References
-<!-- Links to tickets, blog posts, Stack Overflow answers, etc. -->
+- [ ] `make doctor`
+- [ ] `make lint`
+- [ ] `make test-role ROLE=<role>`
+
+## Notes
+
+Mention tradeoffs, skipped checks, follow-up work, or manual steps.
 
