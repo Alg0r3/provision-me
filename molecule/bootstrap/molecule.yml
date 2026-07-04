@@ -9,10 +9,9 @@ provisioner:
   name: ansible
 
 platforms:
-  - name: fedora-42
-    image: fedora:42
+  - name: fedora-${FEDORA_VERSION:-44}
+    image: fedora:${FEDORA_VERSION:-44}
     pre_build_image: true
-  - name: debian-12
-    image: debian:12
+  - name: debian-${DEBIAN_VERSION:-13}
+    image: debian:${DEBIAN_VERSION:-13}
     pre_build_image: true
-

@@ -4,8 +4,12 @@ PYTHON ?= python3
 VENV ?= .venv
 VENV_BIN := $(VENV)/bin
 COLLECTIONS_PATH ?= .ansible/collections
+FEDORA_VERSION ?= 44
+DEBIAN_VERSION ?= 13
 
 export PATH := $(abspath $(VENV_BIN)):$(PATH)
+export FEDORA_VERSION
+export DEBIAN_VERSION
 
 .PHONY: install
 install: ## Create/update the local virtual environment and install dependencies.
