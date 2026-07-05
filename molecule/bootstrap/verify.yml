@@ -26,7 +26,6 @@
     - name: Assert Python-DNF packages are present
       ansible.builtin.assert:
         that:
-         - "'python3-dnf' in ansible_facts.packages"
-         - "'python3-libdnf5' in ansible_facts.packages"
+          - "'python3-dnf' in ansible_facts.packages"
+          - "'python3-libdnf5' in ansible_facts.packages"
       when: ansible_facts.pkg_mgr == "dnf5"
-
