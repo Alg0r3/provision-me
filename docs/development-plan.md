@@ -29,3 +29,6 @@ Molecule development workflow.
 - Review useful material from `feature/terminal-playbook`.
 - Delete the old WIP `feature/fish-role` branch after the new Fish role lands.
 - Add top-level playbooks after the local development workflow is reliable.
+- Add CI checks for top-level playbooks after they exist. Start with
+  `ansible-playbook --syntax-check`, then consider full convergence tests only
+  if the environment model justifies the extra cost.
