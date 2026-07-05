@@ -31,8 +31,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes podman
           sudo sysctl kernel.apparmor_restrict_unprivileged_userns=0
-          podman version
-          podman info
 
       - name: Install dependencies
         run: make install
@@ -70,8 +68,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes podman
           sudo sysctl kernel.apparmor_restrict_unprivileged_userns=0
-          podman version
-          podman info
 
       - name: Install dependencies
         run: make install
