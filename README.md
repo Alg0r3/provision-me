@@ -13,6 +13,9 @@ The first priority is keeping the local development workflow simple and
 repeatable. This project uses a local Python virtual environment for Ansible
 tooling and Podman-backed Molecule scenarios for role tests.
 
+See [docs/design-notes.md](docs/design-notes.md) for the project intent, role
+model, playbook model, and current design choices such as using WezTerm nightly.
+
 ## Requirements
 
 Install these system tools before setting up the project:
