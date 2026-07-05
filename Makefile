@@ -21,7 +21,7 @@ install: ## Create/update the local virtual environment and install dependencies
 
 .PHONY: lint
 lint: ## Run Ansible lint.
-	@ansible-lint .
+	@ansible-lint roles molecule
 
 .PHONY: test
 test: ## Run all Molecule scenarios.

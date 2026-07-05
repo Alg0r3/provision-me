@@ -1,0 +1,24 @@
+---
+- name: Abort if the OS family is unsupported
+  ansible.builtin.fail:
+    msg: >
+      {{ ansible_distribution }} {{ ansible_distribution_version }}
+      is not supported by the fish role. Supported OS families: Debian, RedHat.
+  when: ansible_facts.os_family | lower not in ['debian', 'redhat']
+
+- name: Install Fish on the current OS family
+  ansible.builtin.include_tasks:
+    file: "{{ ansible_facts.os_family | lower }}.yml"
+
+- name: Discover Fish binary path
+  ansible.builtin.command:
+    argv:
+      - fish
+      - --command
+      - status fish-path
+  register: fish_binary
+  changed_when: false
+
+- name: Run Fish post-install tasks
+  ansible.builtin.include_tasks:
+    file: post_install.yml

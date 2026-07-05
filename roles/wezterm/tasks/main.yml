@@ -2,4 +2,3 @@
 - name: Load OS-family specific tasks
   ansible.builtin.include_tasks:
     file: "{{ ansible_facts.os_family | lower }}.yml"
-

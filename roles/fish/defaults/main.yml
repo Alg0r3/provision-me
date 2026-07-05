@@ -1,0 +1,4 @@
+---
+fish_manage_login_shell: false
+fish_users:
+  - "{{ ansible_user_id }}"

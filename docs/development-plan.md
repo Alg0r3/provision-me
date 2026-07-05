@@ -18,12 +18,14 @@ Molecule development workflow.
 - `make install` creates/updates the local project environment.
 - `make lint` passes with 0 failures and 0 warnings.
 - `make test-role ROLE=bootstrap` passes on the host.
+- `make test-role ROLE=fish` passes on the host.
 - `make test-role ROLE=wezterm` passes on the host.
+- `make test` passes on the host.
 
 ## Remaining Work
 
 - Review and manually remove obsolete project-related collections from
   `~/.ansible`, if any exist.
 - Review useful material from `feature/terminal-playbook`.
-- Review and clean the WIP `feature/fish-role`.
+- Delete the old WIP `feature/fish-role` branch after the new Fish role lands.
 - Add top-level playbooks after the local development workflow is reliable.

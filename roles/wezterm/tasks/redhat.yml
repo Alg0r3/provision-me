@@ -2,7 +2,7 @@
 - name: Enable official COPR for Wezterm
   community.general.copr:
     name: wezfurlong/wezterm-nightly
-  notify: refresh dnf cache
+  notify: Refresh dnf cache
 
 - name: Flush queued handlers
   ansible.builtin.meta: flush_handlers

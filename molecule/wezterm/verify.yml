@@ -15,7 +15,8 @@
           - wezterm.stat.mode is match("^0?755$")
 
     - name: Check WezTerm can report its version
-      ansible.builtin.command: wezterm --version
+      ansible.builtin.command:
+        cmd: wezterm --version
       register: wezterm_version
       changed_when: false
 
@@ -24,4 +25,3 @@
         that:
           - wezterm_version.rc == 0
           - wezterm_version.stdout is search("wezterm")
-

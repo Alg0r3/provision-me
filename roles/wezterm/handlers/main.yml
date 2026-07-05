@@ -1,9 +1,8 @@
 ---
-- name: refresh dnf cache
+- name: Refresh dnf cache
   ansible.builtin.dnf:
     update_cache: true
 
-- name: refresh apt cache
+- name: Refresh apt cache
   ansible.builtin.apt:
     update_cache: true
-

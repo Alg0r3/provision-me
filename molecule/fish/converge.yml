@@ -12,4 +12,8 @@
       ansible.builtin.setup:
   become: true
   roles:
-    - role: wezterm
+    - role: fish
+      vars:
+        fish_manage_login_shell: true
+        fish_users:
+          - root
