@@ -1,0 +1,19 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: false
+  pre_tasks:
+    - name: Install basic dependencies
+      ansible.builtin.import_role:
+        name: bootstrap
+      become: false
+
+    - name: Gather facts now that Python3 is installed
+      ansible.builtin.setup:
+  become: true
+  roles:
+    - role: fish
+      vars:
+        fish_manage_login_shell: true
+        fish_users:
+          - root

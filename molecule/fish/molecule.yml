@@ -1,0 +1,31 @@
+---
+dependency:
+  name: galaxy
+  enabled: false
+
+driver:
+  name: podman
+
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      roles_path: ${MOLECULE_PROJECT_DIRECTORY}/roles
+
+scenario:
+  test_sequence:
+    - destroy
+    - create
+    - converge
+    - idempotence
+    - verify
+    - destroy
+
+platforms:
+  - name: fedora-${FEDORA_VERSION:-44}
+    image: fedora:${FEDORA_VERSION:-44}
+    pre_build_image: true
+
+  - name: debian-${DEBIAN_VERSION:-13}
+    image: debian:${DEBIAN_VERSION:-13}
+    pre_build_image: true

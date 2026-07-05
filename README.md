@@ -71,6 +71,7 @@ make doctor
 make lint
 make test
 make test-role ROLE=bootstrap
+make test-role ROLE=fish
 make test-role ROLE=wezterm
 ```
 
@@ -79,6 +80,7 @@ Makefile. Override them when testing a newer or older target:
 
 ```shell
 FEDORA_VERSION=45 make test-role ROLE=bootstrap
+FEDORA_VERSION=45 make test-role ROLE=fish
 DEBIAN_VERSION=13 make test-role ROLE=wezterm
 ```
 

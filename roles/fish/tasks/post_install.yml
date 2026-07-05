@@ -1,0 +1,14 @@
+---
+- name: Ensure Fish is listed in /etc/shells
+  ansible.builtin.lineinfile:
+    path: /etc/shells
+    line: "{{ fish_binary.stdout }}"
+    state: present
+
+- name: Ensure Fish is the login shell
+  ansible.builtin.user:
+    name: "{{ item }}"
+    shell: "{{ fish_binary.stdout }}"
+    state: present
+  loop: "{{ fish_users }}"
+  when: fish_manage_login_shell | bool
